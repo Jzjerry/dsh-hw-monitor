@@ -33,29 +33,33 @@ Dragging, polling and refresh interval are shared by both views.
 
 ## Install
 
-From the npm registry:
+Standard DSH profile install:
 
 ```text
-plugin_manager install_bundle dsh-hw-monitor
+dsh plugin --profile web add @jzjerry/dsh-hw-monitor
 ```
 
-From a local checkout, install the package directory instead:
+Replace `web` with the profile you use. The command adds the package to that
+profile's dependencies and bundle list; the panel mounts after the profile
+recomposes (restart `dsh web` if the profile runs without HMR).
+
+For a local checkout, point the same command at the package directory:
 
 ```text
-plugin_manager install_bundle <absolute path to this checkout>
+dsh plugin --profile web add /absolute/path/to/dsh-hw-monitor
 ```
 
-The bundle patch inserts one row, `hw-monitor`, named `dsh-hw-monitor`. The
-panel works without a page reload when the client graph update is applied;
-otherwise refresh the page once.
+The bundle patch inserts one row, `hw-monitor`, named
+`@jzjerry/dsh-hw-monitor`. The panel works without a page reload when the
+client graph update is applied; otherwise refresh the page once.
 
 If an older local install (`@local/dsh-hw-monitor` or
 `@local/dsh-perf-monitor`) is still present, remove it first so two copies do
 not register overlapping panels:
 
 ```text
-plugin_manager remove_bundle @local/dsh-hw-monitor
-plugin_manager remove_bundle @local/dsh-perf-monitor
+dsh plugin --profile web remove @local/dsh-hw-monitor
+dsh plugin --profile web remove @local/dsh-perf-monitor
 ```
 
 ## Interaction

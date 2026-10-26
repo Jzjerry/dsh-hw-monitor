@@ -23,26 +23,30 @@
 
 ## 安装
 
-从 npm registry 安装：
+标准 DSH profile 安装方式：
 
 ```text
-plugin_manager install_bundle dsh-hw-monitor
+dsh plugin --profile web add @jzjerry/dsh-hw-monitor
 ```
 
-从本地 checkout 安装时，把包目录传给插件管理器：
+把 `web` 换成你实际使用的 profile。该命令会把包加入 profile 依赖和 bundle
+列表；profile 重新组合后面板即挂载（未启用 HMR 的 profile 重启 `dsh web` 后生效）。
+
+从本地 checkout 安装时，把包目录传给同一个命令：
 
 ```text
-plugin_manager install_bundle <本目录的绝对路径>
+dsh plugin --profile web add /本目录的绝对路径
 ```
 
-bundle patch 会插入一行 `hw-monitor`，包名为 `dsh-hw-monitor`。Client 模块图更新后无需刷新；如果没有自动生效，刷新一次页面即可。
+bundle patch 会插入一行 `hw-monitor`，包名为
+`@jzjerry/dsh-hw-monitor`。Client 模块图更新后无需刷新；如果没有自动生效，刷新一次页面即可。
 
 如果还装着旧的本地版本（`@local/dsh-hw-monitor` 或
 `@local/dsh-perf-monitor`），请先移除，避免两个面板同时注册：
 
 ```text
-plugin_manager remove_bundle @local/dsh-hw-monitor
-plugin_manager remove_bundle @local/dsh-perf-monitor
+dsh plugin --profile web remove @local/dsh-hw-monitor
+dsh plugin --profile web remove @local/dsh-perf-monitor
 ```
 
 ## 交互

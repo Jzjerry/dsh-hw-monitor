@@ -3,4 +3,4 @@
 # Browser side: the draggable overlay panel served from ./client.
 - insert:
     - id: hw-monitor
-      name: 'dsh-hw-monitor'
+      name: '@jzjerry/dsh-hw-monitor'

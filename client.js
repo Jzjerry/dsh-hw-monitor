@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-  id: 'dsh-hw-monitor',
+  id: '@jzjerry/dsh-hw-monitor',
   factory(require) {
     const React = require('react')
     const h = React.createElement
