@@ -57,13 +57,25 @@ dsh plugin --profile web remove @local/dsh-perf-monitor
   `localStorage['dsh.hw-monitor.interval']`。
 - 浏览器标签页隐藏时暂停轮询，恢复可见时立即刷新。
 
-## 硬件说明
+## 硬件与跨平台支持说明
 
-- CPU 温度来自 `coretemp`/`k10temp` hwmon（`Package` 与各 `Core` 标签），缺失时回退到 `x86_pkg_temp`。
-- GPU 数据来自 `nvidia-smi`；可用 `DSH_HW_MONITOR_NVIDIA_SMI` 指向非标准路径。消费级 GPU 通过 NVML 只暴露风扇百分比，不暴露 RPM。
-- 任何 hwmon 的 `fan*_input` 都会列入风扇区。开发用的 Intel NUC 11 Extreme 由 EC 控制风扇，未暴露转速，因此面板会明确显示“CPU/机箱风扇未暴露”，不会伪造数值。
-- CPU 功耗使用 Intel RAPL 计数器；普通用户通常无读权限，因此该项自动隐藏。
-- 多 GPU 机器：面板展示第一块 GPU，接口返回全部。
+插件提供跨平台统一数据契约，底层根据操作系统提供最佳采集源，并在缺失时平滑回退：
+
+- **通用回退（Linux / Windows / macOS）**：
+  - **CPU 占用率**：优先使用系统高精度统计，在非 Linux 或缺失系统文件时自动回退为基于 Node.js 原生 `os.cpus()` 时间片的增量计算。
+  - **内存占用**：Linux 优先使用 `/proc/meminfo` 精准计算可用内存；Windows 和 macOS 自动回退为 `os.totalmem()` 与 `os.freemem()`。
+  - **CPU 频率与负载**：使用 `cpufreq` / `os.cpus()` 标称频率。Windows 下 Node.js 原生无负载接口，负载项自动优雅显示为“—”。
+- **Linux 深度采集**：
+  - CPU 温度来自 `coretemp`/`k10temp` hwmon（支持 `Package` 与各 `Core` 细分），缺失时回退到 `x86_pkg_temp`。
+  - 自动发现并支持 NVMe、Wi-Fi、ACPI 及主板风扇（`fan*_input`）。
+  - CPU 功耗在有权限时尝试通过 Intel RAPL 读取。
+- **Windows 支持**：
+  - **NVIDIA GPU**：自动检测 `C:\Windows\System32\nvidia-smi.exe` 及常见 NVIDIA 安装路径，开箱即可完整监控 GPU 核心温度、显存、占用、功耗和风扇。
+  - **独立指令探测**：优先尝试查询 Windows WMI（`MSAcpi_ThermalZoneTemperature`）以及常见的硬件监控软件（`LibreHardwareMonitor` / `OpenHardwareMonitor`）导出的 WMI 传感器。
+- **macOS 支持**：
+  - **独立指令探测**：优先检测并自动对接系统中已安装的 CLI 工具（如 `osx-cpu-temp`、`istats`、`macmon` 等）。
+- **零性能损耗保障**：
+  - 所有平台的外部指令均内置 60 秒失败冷却/熔断机制，若系统未安装某项外部工具，绝不会在轮询中频繁重试，保证开销接近于零。
 
 ## 路由约定
 

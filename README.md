@@ -72,19 +72,35 @@ dsh plugin --profile web remove @local/dsh-perf-monitor
   `localStorage['dsh.hw-monitor.interval']`.
 - Polling pauses while the browser tab is hidden.
 
-## Hardware notes
+## Hardware and cross-platform notes
 
-- CPU temperature comes from `coretemp`/`k10temp` hwmon (`Package` and per-core
-  labels), with `x86_pkg_temp` as a fallback.
-- GPU data comes from `nvidia-smi`; `DSH_HW_MONITOR_NVIDIA_SMI` can point at a
-  non-standard binary. GPU fan speed is a percentage, not RPM — consumer GPUs
-  do not expose a tachometer through NVML.
-- Chassis/CPU fans are listed when any `hwmon` `fan*_input` exists. On the
-  Intel NUC 11 Extreme used for development, the EC owns the fan and exposes
-  no RPM, so the panel says so explicitly instead of inventing a value.
-- CPU package power uses the Intel RAPL counter when it is readable; it is
-  usually root-only, so the field stays hidden for normal users.
-- Multi-GPU systems: the panel shows the first GPU; the endpoint returns all.
+The plugin provides a unified telemetry contract across platforms, using deep
+native probes where available and graceful Node.js standard OS fallbacks:
+
+- **Universal fallbacks (Linux / Windows / macOS)**:
+  - **CPU load**: Calculated via successive high-resolution ticks (`/proc/stat`
+    on Linux), automatically falling back to Node.js `os.cpus()` time slices on
+    Windows and macOS.
+  - **Memory**: Linux parses `/proc/meminfo` for accurate available memory;
+    Windows and macOS automatically fall back to `os.totalmem()` and `os.freemem()`.
+  - **Clocks and load avg**: Derived from `cpufreq` and `os.cpus()`. On Windows
+    where Node.js loadavg is unavailable, the load field gracefully shows "—".
+- **Linux specialization**:
+  - CPU temperatures via `coretemp`/`k10temp` hwmon (`Package` and per-core
+    labels), with `x86_pkg_temp` fallback.
+  - Board sensors (NVMe, Wi-Fi, ACPI) and fan RPMs from `hwmon`.
+  - Intel RAPL CPU package power when accessible.
+- **Windows support**:
+  - **NVIDIA GPU**: Automatically scans `C:\Windows\System32\nvidia-smi.exe` and
+    common NVSMI install directories out of the box.
+  - **Standalone commands**: Opportunistically checks WMI
+    (`MSAcpi_ThermalZoneTemperature`) and `LibreHardwareMonitor` sensors.
+- **macOS support**:
+  - **Standalone commands**: Opportunistically probes CLI tools if installed
+    (`osx-cpu-temp`, `istats`, `macmon`).
+- **Zero-overhead safeguard**:
+  - All external commands have a built-in 60-second failure cooldown. Missing
+    tools are never repeatedly spawned during polling intervals.
 
 ## Route contract
 

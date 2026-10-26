@@ -1,6 +1,6 @@
 {
   "name": "@jzjerry/dsh-hw-monitor",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Draggable hardware monitor panel for the DSH web GUI: live CPU/GPU temperature, load, clocks and fan speed",
   "type": "module",
   "license": "Apache-2.0",
