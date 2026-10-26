@@ -1,0 +1,6 @@
+# dsh-hw-monitor bundle patch: one row mounts both halves.
+# Host side: the /api/hw-monitor/snapshot telemetry route.
+# Browser side: the draggable overlay panel served from ./client.
+- insert:
+    - id: hw-monitor
+      name: 'dsh-hw-monitor'

@@ -1,0 +1,55 @@
+{
+  "name": "dsh-hw-monitor",
+  "version": "0.2.0",
+  "description": "Draggable hardware monitor panel for the DSH web GUI: live CPU/GPU temperature, load, clocks and fan speed",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "Jzjerry",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jzjerry/dsh-hw-monitor.git"
+  },
+  "homepage": "https://github.com/Jzjerry/dsh-hw-monitor#readme",
+  "bugs": {
+    "url": "https://github.com/Jzjerry/dsh-hw-monitor/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "hardware-monitor",
+    "cpu",
+    "gpu",
+    "temperature",
+    "fan"
+  ],
+  "icon": "icon.svg",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "collect.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

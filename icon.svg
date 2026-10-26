@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Hardware monitor">
+  <defs>
+    <linearGradient id="pm-bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1c2d50"/>
+      <stop offset="1" stop-color="#0d1424"/>
+    </linearGradient>
+    <linearGradient id="pm-accent" x1="20" y1="20" x2="46" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#93bdff"/>
+      <stop offset="1" stop-color="#5ee0c0"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#pm-bg)"/>
+  <rect x="18" y="18" width="28" height="28" rx="6" fill="none" stroke="url(#pm-accent)" stroke-width="2.4"/>
+  <g stroke="url(#pm-accent)" stroke-width="2" stroke-linecap="round">
+    <path d="M24 18v-4M32 18v-4M40 18v-4M24 50v-4M32 50v-4M40 50v-4"/>
+    <path d="M18 24h-4M18 32h-4M18 40h-4M50 24h-4M50 32h-4M50 40h-4"/>
+  </g>
+  <path d="M24 35a8 8 0 0 1 16 0" fill="none" stroke="url(#pm-accent)" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M32 35l4.6-4.6" fill="none" stroke="#5ee0c0" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="32" cy="35" r="2.2" fill="#93bdff"/>
+</svg>

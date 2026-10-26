@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Hardware Monitor",
+    "description": "Draggable panel with live CPU/GPU temperature, load, clocks and fan speed."
+  }
+}
